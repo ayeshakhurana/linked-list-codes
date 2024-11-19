@@ -1,0 +1,452 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int isprime(int x){
+    int i,c=0;
+    for(i=1;i<=x;i++){
+        if(x%i==0){
+            c++;
+        }
+    }
+    if(c>2){
+        return 0;
+    }else{
+        return 1;
+    }
+}
+int isarmstrong(int x){
+    int rem,sum=0,temp;
+    temp=x;
+    while(x!=0){
+        rem=x%10;
+        sum=sum+pow(x,3);
+        x=x/10;
+    }
+    if(sum==temp){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+typedef struct snode{
+    int info;
+    struct snode* next;
+}sn;
+sn *beg_insert(sn *head){
+    sn *temp;
+    temp=(sn*)malloc(sizeof(sn));
+    if(temp==NULL){
+        printf("memory not allocates");
+        exit(1);
+    }else if(head==NULL){
+        printf("enter element to be inserted at beginning : ");
+        scanf("%d",&temp->info);
+        temp->next=NULL;
+        head=temp;
+    }else{
+        printf("enter element to be inserted at beginning : ");
+        scanf("%d",&temp->info);
+        temp->next=head;
+        head=temp;
+    }
+    return head;
+}
+sn *last_insert(sn *head){
+    sn *temp;
+    temp=(sn*)malloc(sizeof(sn));
+    if(temp==NULL){
+        printf("memory not allocated");
+        exit(1);
+    }else if(head==NULL){
+        printf("enter element to be inserted at last: ");
+        scanf("%d",&temp->info);
+        temp->next=head;
+        head=temp;
+    }else{
+        sn *p1;
+        p1=head;
+        while(p1->next!=NULL){
+            p1=p1->next;
+        }
+        printf("enter element to be inserted at last: ");
+        scanf("%d",&temp->info);
+        p1->next=temp;
+        temp->next=NULL;
+    }
+    return head;
+}
+sn *delete_beg(sn *head){
+    sn* p1, *p2;
+    p1=head;
+    p2=head;
+    p1=p1->next;
+    head=p1;
+    free(p2);
+    return head;
+}
+sn* delete_last(sn *head){
+    sn *p1, *p2;
+    p1=head;
+    while(p1->next!=NULL){
+        p2=p1;
+        p1=p1->next;
+    }
+    p2->next=NULL;
+    free(p1);
+    return head;
+}
+sn* insert_after(sn *head){
+    int item;
+    sn *temp;
+    temp=(sn*)malloc(sizeof(sn));
+    if(temp==NULL){
+        printf("memory not allocated");
+        exit(1);
+    }else{
+        sn *p1;
+        p1=head;
+        printf("enter info of node: ");
+        scanf("%d",&item);
+        while(p1->info!=item){
+            p1=p1->next;
+        }
+        printf("enter element to be inserted: ");
+        scanf("%d",&temp->info);
+        temp->next=p1->next;
+        p1->next=temp;
+    }
+    return head;
+}
+sn *insert_before(sn *head){
+    sn *temp;
+    temp=(sn*)malloc(sizeof(sn));
+    if(temp==NULL){
+        printf("memory not allocated");
+        exit(1);
+    }else{
+        sn *p1, *p2;
+        p1=head;
+        p2=NULL;
+        int item;
+        printf("enter info of node: ");
+        scanf("%d",&item);
+        printf("enter element to be inserted: ");
+        scanf("%d",&temp->info);
+        while(p1->info!=item){
+            p2=p1;
+            p1=p1->next;
+        }
+        temp->next=p2->next;
+        p2->next=temp;
+    }
+    return head;
+}
+sn* delete_before(sn* head){
+    sn* p1, *p2 ,*p3;
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        p1=head;
+        p3=head;
+        int item,temp;
+        printf("enter value of node before which the node is to be deleted: ");
+        scanf("%d",&item);
+        while(p1->info!=item){
+            p2=p1;
+            p1=p1->next;
+        }
+        temp=p2->info;
+        p2=NULL;
+        while(p3->info!=temp){
+            p2=p3;
+            p3=p3->next;
+        }
+        p2->next=p1;
+        free(p3);
+    }
+    return head;
+}
+sn* delete_after(sn* head){
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        sn* p1,*p2;
+        p1=head;
+        int item;
+        printf("enter value of node after which the node is to be deletedd : ");
+        scanf("%d",&item);
+        while(p1->info!=item){
+            p1=p1->next;
+        }
+        p2=p1->next;
+        p1->next=p2->next;
+        free(p2);
+    }
+    return head;
+}
+sn* print_alternate(sn* head){
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        sn* p1=head;
+        int c=0;
+        while(p1!=NULL){
+            c++;
+            p1=p1->next;
+        }
+        p1=head;
+        for(int i=0;i<c;i++){
+            if(i%2==0){
+                printf("%d\n",p1->info);
+            }
+            p1=p1->next;
+        }
+    }
+    return head;
+}
+sn* second_last(sn* head){
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        sn *p1=head, *p2;
+        while(p1->next!=NULL){
+            p2=p1;
+            p1=p1->next;
+        }
+        printf("%d",p2->info);
+    }
+    return head;
+}
+sn* print_primes(sn* head){
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        sn* p1=head;
+        while(p1!=NULL){
+            if(isprime(p1->info)){
+                printf("%d\n",p1->info);
+            }
+            p1=p1->next;
+        }
+    }
+    return head;
+}
+sn* print_armstrong(sn* head){
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        sn* p1=head;
+        while(p1->next!=NULL){
+            if(isarmstrong(p1->info)){
+                printf("%d\n",p1->info);
+            }
+            p1=p1->next;
+        }
+    }
+    return head;
+}
+sn* reverse(sn* head){
+    sn* p1, *p2, *p3;
+    p1=NULL;
+    p2=head;
+    p3=NULL;
+    if(p2==NULL){
+        printf("list is empty");
+        exit(1);
+    }else{
+        while(p2!=NULL){
+            p3=p2->next;
+            p2->next=p1;
+            p1=p2;
+            p2=p3;
+        }
+        head=p1;
+        while(p1!=NULL){
+        printf("%d\n",p1->info);
+        p1=p1->next;
+    }
+    }
+    return head;
+}
+sn* rotate(sn* head){
+    sn *p1,*p2,*p3;
+    int n;
+    printf("enter the number of times list is to be rotated: ");
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        p1=p2=head;
+        while(p1->next!=NULL){
+            p1=p1->next;
+        }
+        p3=p2->next;
+        p2->next=NULL;
+        p1->next=p2;
+        head=p3;
+    }
+    return head;
+}
+sn* delete_n_last(sn *head){
+    sn *p1,*p2,*p3;
+    int n;
+    if(head==NULL){
+        printf("list is empty");
+        return head;
+    }
+    if(head->next==NULL){
+        p1=head;
+        free(p1);
+        head=NULL;
+        return head;
+    }
+    printf("enter the nth node from last that is to be deleted: ");
+    scanf("%d",&n);
+    p1=p2=head;
+    p3=NULL;
+    int c=0;
+    while(p1->next!=NULL){
+        c++;
+        p1=p1->next;
+    }
+    int temp;
+    temp=c-n+1;
+    for(int i=0;i<temp;i++){
+        p3=p2;
+        p2=p2->next;
+    }
+    p3->next=p2->next;
+    free(p2);
+    return head;
+}
+sn *delete_duplicate(sn *head){
+        if(head==NULL){
+            return head;
+        }else{
+            sn *p1=head,*p2,*p3;
+            while(p1->next!=NULL){
+                p2=p1;
+                while(p2->next!=NULL){
+                    if(p1->info==p2->next->info){
+                        p3=p2->next;
+                        p2->next=p3->next;
+                        free(p3);
+                    }else{
+                        p2=p2->next;
+                    }
+                }
+                p1=p1->next;
+            }
+        }
+        return head;
+}
+void display(sn *head){
+    sn *temp;
+    temp=head;
+    if(head==NULL){
+        printf("list is empty");
+        exit(1);
+    }
+    else{
+        while(temp!=NULL){
+            printf("%d\n",temp->info);
+            temp=temp->next;
+        }
+    }
+}
+int main(){
+    int n,i;
+    sn *head=NULL;
+    printf("enter number of elements in the list: ");
+    scanf("%d",&n);
+    head=beg_insert(head);
+    for(i=0;i<n-1;i++){
+        head=last_insert(head);
+    }
+    int ch;
+    do{
+        printf("enter your choice:\n 1. insert at beg\n 2. insert at last\n 3. delete from beg\n 4. delete from last\n 5.insert after node \n 6.insert before node \n 7. delete before node \n 8. delete after node \n 9. print alternate nodes \n 10. print second last \n 11. print primes \n 12. print armstrong \n 13.reverse \n 14. display \n 15.rotate \n 16. delete nth node from last \n  17. delete duplicate nodes \n");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1:
+                   head=beg_insert(head);
+                   printf("list after insertion at beginning is: \n");
+                   display(head);
+                   break;
+            case 2:
+                   head=last_insert(head);
+                   printf("list after insertion at last is: \n");
+                   display(head);
+                   break;
+            case 3:
+                   head=delete_beg(head);
+                   printf("list after deletion from beg is: \n");
+                   display(head);
+                   break;
+            case 4:
+                   head=delete_last(head);
+                   printf("list after deletion from last is: \n");
+                   display(head);
+                   break;
+            case 5:
+                  head=insert_after(head);
+                  printf("list after insertion is: \n");
+                  display(head);
+                  break;
+            case 6:
+                  head=insert_before(head);
+                  printf("list after insertion is: \n");
+                  display(head);
+                  break;
+            case 7:
+                  head=delete_before(head);
+                  printf("list after deletion is: \n");
+                  display(head);
+                  break;
+            case 8:
+                  head=delete_after(head);
+                  printf("list after deletion is: \n");
+                  display(head);
+                  break;
+            case 9:
+                  head=print_alternate(head);
+                  break;
+            case 10: 
+                  head=second_last(head);
+                  break;
+            case 11:
+                  head=print_primes(head);
+                  break;
+            case 12:
+                  head=print_armstrong(head);
+                  break;
+            case 13:
+                  reverse(head);
+                  break;
+            case 14:
+                  display(head);
+                  break;
+            case 15:
+                  head=rotate(head);
+                  printf("list after rotation is: \n");
+                  display(head);
+                  break;
+            case 16:
+                  head=delete_n_last(head);
+                  printf("list after deletion is: \n");
+                  display(head);
+                  break;
+            case 17:
+                  head=delete_duplicate(head);
+                  printf("list after deletion is: \n");
+                  display(head);
+                  break;
+
+        }
+    }while(ch!=18);
+    return 0;
+}
