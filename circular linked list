@@ -1,0 +1,140 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct cnode{
+    int info;
+    struct cnode *next;
+}sc;
+sc *insert_beg(sc *head){
+    sc *temp;
+    temp=(sc*)malloc(sizeof(sc));
+    if(temp==NULL){
+        return head;
+    }else if(head==NULL){
+        printf("enter element to be inserted at the beginning: ");
+        scanf("%d",&temp->info);
+        head=temp;
+        temp->next=head;
+        return head;
+    }else{
+        printf("enter element to be inserted at the beginning: ");
+        scanf("%d",&temp->info);
+        sc *p1=head;
+        while(p1->next!=head){
+            p1=p1->next;
+        }
+        temp->next=head;
+        p1->next=temp;
+        head=temp;
+        return head;
+    }
+}
+sc *insert_last(sc *head){
+    sc *temp;
+    temp=(sc*)malloc(sizeof(sc));
+    if(temp==NULL){
+        return head;
+    }else if(head==NULL){
+        printf("enter element to be inserted at the last: ");
+        scanf("%d",&temp->info);
+        head=temp;
+        temp->next=head;
+        return head;
+    }else{
+        sc *p1=head;
+        while(p1->next!=head){
+            p1=p1->next;
+        }
+        printf("enter element to be inserted at the last: ");
+        scanf("%d",&temp->info);
+        p1->next=temp;
+        temp->next=head;
+        return head;
+    }
+}
+sc *delete_beg(sc *head){
+    if(head==NULL){
+        return head;
+    }else if(head->next==head){
+        sc *p1=head;
+        free(p1);
+        head=NULL;
+        return head;
+    }else{
+        sc *p1=head, *p2=NULL, *p3=head;
+        p2=p1->next;
+        while(p1->next!=head){
+            p1=p1->next;
+        }
+        p1->next=p2;
+        head=p2;
+        free(p3);
+        return head;
+    }
+}
+sc *delete_last(sc *head){
+    if(head==NULL){
+        return head;
+    }else if(head->next==head){
+        sc *p1=head;
+        head=NULL;
+        free(p1);
+        return head;
+    }else{
+        sc *p1=head, *p2=NULL;
+        while(p1->next!=head){
+            p2=p1;
+            p1=p1->next;
+        }
+        p2->next=head;
+        free(p1);
+        return head;
+    }
+}
+void display(sc *head){
+    if(head==NULL){
+        printf("list is empty");
+        return ;
+    }else{
+        sc *p1=head;
+        while(p1->next!=head){
+            printf("%d \n",p1->info);
+            p1=p1->next;
+        }
+        printf("%d\n",p1->info);
+    }
+}
+int main(){
+    sc *head=NULL;
+    int ch;
+    do{
+        printf("enter choice:\n 1. insert at beginning \n 2. insert at last \n 3. delte from beginning \n 4. deletr from end \n 5.display list \n ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1: 
+                    head=insert_beg(head);
+                    printf("list after insertion is: \n");
+                    display(head);
+                    break;
+            case 2:
+                    head=insert_last(head);
+                    printf("list after insertion is: \n");
+                    display(head);
+                    break;
+            case 3:
+                    head=delete_beg(head);
+                    printf("list after deletion is :\n");
+                    display(head);
+                    break;
+            case 4:
+                    head=delete_last(head);
+                    printf("list after deletion is: \n");
+                    display(head);
+                    break;
+            case 5:
+                    printf("list is:\n");
+                    display(head);
+                    break;
+        }
+    }while(ch!=6);
+    return 0;
+}
